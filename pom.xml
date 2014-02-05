@@ -11,26 +11,72 @@
     
     <name>Rubber Duck: Parent POM</name>
     
+    <properties>
+        <target.dir>./target</target.dir>
+    </properties>
+    
     <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
-                <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
-                </configuration>
-            </plugin>
-        </plugins>
-        
         <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <version>2.5</version>
+                    <inherited>true</inherited>
+                    <configuration>
+                        <filesets>
+                            <fileset>
+                                <directory>${target.dir}</directory>
+                            </fileset>
+                        </filesets>
+                    </configuration>
+                </plugin>
             
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>2.4</version>
+                    <inherited>true</inherited>
+                    <executions>
+                        <execution>
+                            <id>default-jar</id>
+                            <phase>prepare-package</phase>
+                            <configuration>
+                                <excludes>
+                                    <exclude>**/*.properties</exclude>
+                                </excludes>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+            
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.1</version>
+                    <inherited>true</inherited>
+                    <configuration>
+                        <source>1.7</source>
+                        <target>1.7</target>
+                    </configuration>
+                </plugin>
+            
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>2.16</version>
+                    <inherited>true</inherited>
+                    <configuration>
+                        <argLine>-Xmx256m</argLine>
+                    </configuration>
+                </plugin>
+            </plugins>
         </pluginManagement>
     </build>
     
     <dependencyManagement>
         <dependencies>
+            <!-- Logging -->
             <dependency>
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-classic</artifactId>
@@ -40,6 +86,20 @@
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
                 <version>1.7.5</version>
+            </dependency>
+            
+            <!-- Test -->
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>4.11</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-all</artifactId>
+                <version>1.9.5</version>
+                <scope>test</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
